@@ -7,10 +7,14 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-anim" aria-hidden="true"></div>
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="bg-layer layer1"></div>
+    <div class="bg-layer layer2"></div>
+    <div class="bg-layer layer3"></div>
+  </div>
 
-  <main class="hero" role="main">
-    <div class="wrap">
+  <main class="hero">
+    <div class="container">
       <header class="brand">
         <h1 id="title">Our Future Together</h1>
         <p id="subtitle">A little glimpse of the life we’re creating together…</p>
@@ -21,21 +25,25 @@
         <a id="qrLink" class="btn ghost" href="#" target="_blank" rel="noopener">Scan / Open</a>
       </div>
 
-      <div id="carousel" class="carousel" aria-live="polite">
-        <article class="card active" data-index="0">
-          <div class="num">01</div>
-          <p class="card-text">Small joys and everyday moments.</p>
-        </article>
+      <div class="carousel" id="carousel" aria-live="polite">
+        <!-- slides -->
+        <section class="slide active" data-index="0">
+          <div class="slide-num">01</div>
+          <h2 class="slide-title">Small joys and everyday moments.</h2>
+          <p class="slide-desc">Morning coffee, rainy walks, warm smiles — the small things add up.</p>
+        </section>
 
-        <article class="card" data-index="1">
-          <div class="num">02</div>
-          <p class="card-text">Dreams we chase together.</p>
-        </article>
+        <section class="slide" data-index="1">
+          <div class="slide-num">02</div>
+          <h2 class="slide-title">Dreams we chase together.</h2>
+          <p class="slide-desc">Plans, late-night talks and brave decisions — we grow together.</p>
+        </section>
 
-        <article class="card" data-index="2">
-          <div class="num">03</div>
-          <p class="card-text">A future built with love and work.</p>
-        </article>
+        <section class="slide" data-index="2">
+          <div class="slide-num">03</div>
+          <h2 class="slide-title">A future built with love and work.</h2>
+          <p class="slide-desc">We build day by day — supporting, learning, celebrating.</p>
+        </section>
       </div>
 
       <div class="controls" id="controls">
