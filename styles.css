@@ -145,8 +145,11 @@ body::after{
   gap:18px;
   justify-content:center;
   align-items:center;
-  margin:18px 0 28px 0;  /* space between card and buttons */
+  margin:18px 0 28px 0; /* space below the card */
 }
+.ctrl.prev{ background: linear-gradient(135deg, #ff7aa8, #ff5f8b); }
+.ctrl.next{ background: linear-gradient(135deg, #7b6bff, #6a56ff); }
+
 
 /* big rounded colorful buttons like ref */
 .ctrl{
@@ -195,4 +198,5 @@ body::after{
 
 /* focus outline for accessibility */
 button:focus, a:focus { outline: 3px solid rgba(125,100,255,0.14); outline-offset:3px; }
+
 
