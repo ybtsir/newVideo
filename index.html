@@ -7,43 +7,47 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="hero">
-    <div class="content">
-      <h1 id="title">Our Future Together</h1>
-      <p id="subtitle">A little glimpse of the life we’re creating together…</p>
+  <div class="bg-anim" aria-hidden="true"></div>
 
-      <div class="start-row">
-        <button id="startBtn" class="btn">Start</button>
-        <a id="qrLink" class="qr-link" href="#" target="_blank" aria-label="Open site via QR">Scan / Open</a>
+  <main class="hero" role="main">
+    <div class="wrap">
+      <header class="brand">
+        <h1 id="title">Our Future Together</h1>
+        <p id="subtitle">A little glimpse of the life we’re creating together…</p>
+      </header>
+
+      <div class="action-row">
+        <button id="startBtn" class="btn primary">Start</button>
+        <a id="qrLink" class="btn ghost" href="#" target="_blank" rel="noopener">Scan / Open</a>
       </div>
 
-      <div class="steps" id="steps">
-        <section class="step active" data-step="1">
-          <h2 class="step-title">01</h2>
-          <p class="step-text">Small joys and everyday moments.</p>
-        </section>
+      <div id="carousel" class="carousel" aria-live="polite">
+        <article class="card active" data-index="0">
+          <div class="num">01</div>
+          <p class="card-text">Small joys and everyday moments.</p>
+        </article>
 
-        <section class="step" data-step="2">
-          <h2 class="step-title">02</h2>
-          <p class="step-text">Dreams we chase together.</p>
-        </section>
+        <article class="card" data-index="1">
+          <div class="num">02</div>
+          <p class="card-text">Dreams we chase together.</p>
+        </article>
 
-        <section class="step" data-step="3">
-          <h2 class="step-title">03</h2>
-          <p class="step-text">A future built with love and work.</p>
-        </section>
+        <article class="card" data-index="2">
+          <div class="num">03</div>
+          <p class="card-text">A future built with love and work.</p>
+        </article>
       </div>
 
-      <div class="controls">
+      <div class="controls" id="controls">
         <button id="prev" class="ctrl">Prev</button>
         <button id="next" class="ctrl">Next</button>
       </div>
+
+      <footer class="footer">
+        <small id="footerText">Made with ♥ — change this text</small>
+      </footer>
     </div>
   </main>
-
-  <footer class="footer">
-    <small id="footerText">Made with ♥ — change this text</small>
-  </footer>
 
   <script src="script.js"></script>
 </body>
