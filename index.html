@@ -7,51 +7,60 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- decorative animated background -->
   <div class="bg-wrap" aria-hidden="true">
-    <div class="bg-layer layer1"></div>
-    <div class="bg-layer layer2"></div>
-    <div class="bg-layer layer3"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
 
-  <main class="hero">
-    <div class="container">
-      <header class="brand">
+  <main class="page">
+    <div class="stage">
+      <header class="hero-head">
         <h1 id="title">Our Future Together</h1>
         <p id="subtitle">A little glimpse of the life we’re creating together…</p>
       </header>
 
-      <div class="action-row">
+      <div class="actions">
         <button id="startBtn" class="btn primary">Start</button>
         <a id="qrLink" class="btn ghost" href="#" target="_blank" rel="noopener">Scan / Open</a>
       </div>
 
-      <div class="carousel" id="carousel" aria-live="polite">
-        <!-- slides -->
-        <section class="slide active" data-index="0">
-          <div class="slide-num">01</div>
-          <h2 class="slide-title">Small joys and everyday moments.</h2>
-          <p class="slide-desc">Morning coffee, rainy walks, warm smiles — the small things add up.</p>
-        </section>
+      <div id="slides" class="slides" aria-live="polite">
+        <!-- slide 0 -->
+        <article class="slide" data-i="0" aria-hidden="false">
+          <div class="slide-inner">
+            <div class="index">01</div>
+            <h2 class="line main">Small joys and everyday moments.</h2>
+            <p class="sub">Morning coffee, rainy walks, warm smiles — the small things add up.</p>
+          </div>
+        </article>
 
-        <section class="slide" data-index="1">
-          <div class="slide-num">02</div>
-          <h2 class="slide-title">Dreams we chase together.</h2>
-          <p class="slide-desc">Plans, late-night talks and brave decisions — we grow together.</p>
-        </section>
+        <!-- slide 1 -->
+        <article class="slide" data-i="1" aria-hidden="true">
+          <div class="slide-inner">
+            <div class="index">02</div>
+            <h2 class="line main">Dreams we chase together.</h2>
+            <p class="sub">Plans, late-night talks and brave decisions — we grow together.</p>
+          </div>
+        </article>
 
-        <section class="slide" data-index="2">
-          <div class="slide-num">03</div>
-          <h2 class="slide-title">A future built with love and work.</h2>
-          <p class="slide-desc">We build day by day — supporting, learning, celebrating.</p>
-        </section>
+        <!-- slide 2 -->
+        <article class="slide" data-i="2" aria-hidden="true">
+          <div class="slide-inner">
+            <div class="index">03</div>
+            <h2 class="line main">A future built with love and work.</h2>
+            <p class="sub">We build day by day — supporting, learning, celebrating.</p>
+          </div>
+        </article>
       </div>
 
-      <div class="controls" id="controls">
+      <div class="controls">
         <button id="prev" class="ctrl">Prev</button>
         <button id="next" class="ctrl">Next</button>
       </div>
 
-      <footer class="footer">
+      <footer class="foot">
         <small id="footerText">Made with ♥ — change this text</small>
       </footer>
     </div>
