@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
   next.addEventListener('click', () => show(idx + 1));
 
   // QR link: default placeholder - will be replaced after deploy
-  const placeholder = 'https://your-domain.vercel.app';
+  const placeholder = 'https://ybtsir.github.io/newVideo/';
   qrLink.href = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(placeholder)}`;
   qrLink.target = '_blank';
 });
+
