@@ -64,19 +64,31 @@ body{
 /* --- SLIDE CARD: centered with margin auto (no left/transform hack) --- */
 .slide{
   position:relative;
+
+  /* FULL width on mobile */
   width:100%;
-  max-width:700px;
-  margin: 0 auto;           /* center the card within the .slides container */
+  max-width: 92%;        /* widen card on small screens */
+  margin: 0 auto;
+
   background:var(--card);
-  border-radius:14px;
-  padding:20px 20px 72px 20px; /* extra bottom padding for controls */
+  border-radius:18px;     /* nicer rounded corners for wider card */
+  padding:24px 24px 90px 24px; /* increase padding for balance */
+
   box-shadow:var(--shadow);
-  /* remove left:50% and translate transform to avoid off-right placement */
   transform: translateY(12px) scale(.98);
   opacity:0;
   pointer-events:none;
   transition: transform .55s cubic-bezier(.2,.9,.3,1), opacity .4s ease;
 }
+
+/* WIDER on tablets/desktops */
+@media (min-width:768px){
+  .slide{
+    max-width: 680px;     /* or 720px if you want even more */
+    padding:28px 28px 90px 28px;
+  }
+}
+
 
 /* active state */
 .slide.active{
@@ -115,4 +127,5 @@ body{
 
 /* footer */
 .foot{margin-top:20px; padding-left:6px; color:rgba(10,40,45,.45); font-size:13px;}
+
 
