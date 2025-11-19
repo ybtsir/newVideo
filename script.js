@@ -1,4 +1,5 @@
-// FINAL script.js - video-aware slider with pinned controls + auto-advance on video end
+// script.js - image-only slider with autoplay toggle
+
 document.addEventListener('DOMContentLoaded', () => {
   const slides = Array.from(document.querySelectorAll('.slide'));
   const startBtn = document.getElementById('startBtn');
@@ -6,113 +7,99 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('next');
   const qrLink = document.getElementById('qrLink');
 
-  // Set your QR target (change to Vercel URL if you deploy there)
-  const placeholder = 'https://ybtsir.github.io/newVideo/';
-  qrLink.href = `https://chart.googleapis.com/chart?cht=qr&chs=350x350&chl=${encodeURIComponent(placeholder)}`;
+  // set QR to open site (you can change it)
+  const siteURL = 'https://ybtsir.github.io/newVideo/';
+  qrLink.href = `https://chart.googleapis.com/chart?cht=qr&chs=350x350&chl=${encodeURIComponent(siteURL)}`;
 
-  const transitionMs = 620; // should match CSS transition
-  let current = 0;
+  const transitionMs = 420;  // CSS animation time (if used)
+  let current = slides.findIndex(s => s.classList.contains('active'));
+  if (current === -1) current = 0;
   let animating = false;
-  let videoEndHandler = null;
+  let autoplayTimer = null;
+  const autoplayDelay = 3200; // ms per slide during autoplay
 
-  // helper: return <video> element inside a slide or null if not present
-  const getVideo = (slide) => {
-    if (!slide) return null;
-    const el = slide.querySelector('.slide-video');
-    return el && el.tagName === 'VIDEO' ? el : null;
-  };
-
-  function pauseVideo(i){
-    const v = getVideo(slides[i]);
-    if (v){ try { v.pause(); v.currentTime = 0; } catch(e){} }
-  }
-
-  function playVideo(i){
-    const v = getVideo(slides[i]);
-    if (!v) return;
-
-    // cleanup old listener
-    if (videoEndHandler){
-      slides.forEach(s=>{
-        const vv = getVideo(s);
-        if (vv) vv.removeEventListener('ended', videoEndHandler);
-      });
-      videoEndHandler = null;
-    }
-
-    videoEndHandler = () => {
-      goTo((i + 1) % slides.length, 'left');
-    };
-    v.addEventListener('ended', videoEndHandler);
-
-    v.muted = true;           // required for autoplay on mobile
-    v.currentTime = 0;
-    const p = v.play();
-    if (p && p.catch) p.catch(()=>{ /* ignore autoplay rejection */ });
-  }
-
-  function goTo(nextIndex, direction='left'){
-    if (animating || nextIndex === current) return;
-    animating = true;
-
-    const oldSlide = slides[current];
-    const newSlide = slides[(nextIndex + slides.length) % slides.length];
-
-    // pause old slide's video (if any)
-    pauseVideo(current);
-
-    if (direction === 'left'){
-      oldSlide.classList.add('exit-left');
-      newSlide.classList.add('enter-right');
-    } else {
-      oldSlide.classList.add('exit-right');
-      newSlide.classList.add('enter-left');
-    }
-
-    requestAnimationFrame(()=>{
-      slides.forEach(s => s.classList.remove('active'));
-      newSlide.classList.add('active');
-      newSlide.setAttribute('aria-hidden','false');
-      oldSlide.setAttribute('aria-hidden','true');
+  // helper: safely set active slide
+  function setActive(index) {
+    index = (index + slides.length) % slides.length;
+    slides.forEach((s, i) => {
+      const active = i === index;
+      s.classList.toggle('active', active);
+      s.setAttribute('aria-hidden', active ? 'false' : 'true');
     });
-
-    setTimeout(()=>{
-      slides.forEach(s => s.classList.remove('enter-left','enter-right','exit-left','exit-right'));
-      current = (nextIndex + slides.length) % slides.length;
-      animating = false;
-      playVideo(current);
-      scrollActiveIntoView(); // ensure controls visible on mobile
-    }, transitionMs + 20);
+    current = index;
   }
 
-  // scroll helper keeps controls visible under mobile UI
-  function scrollActiveIntoView(){
+  // scroll active slide into comfortable view
+  function scrollActiveIntoView() {
     const active = document.querySelector('.slide.active');
     if (!active) return;
     const rect = active.getBoundingClientRect();
     const absoluteTop = window.scrollY + rect.top;
-    const offset = 100; // push it a bit below top
+    const offset = 80; // adjust to place card a bit below top
     window.scrollTo({ top: Math.max(absoluteTop - offset, 0), behavior: 'smooth' });
   }
 
-  // wire buttons
-  nextBtn.addEventListener('click', () => goTo((current + 1) % slides.length, 'left'));
-  prevBtn.addEventListener('click', () => goTo((current - 1 + slides.length) % slides.length, 'right'));
+  function goTo(nextIndex, direction='left') {
+    if (animating || nextIndex === current) return;
+    animating = true;
 
-  // Start: play first slide video if present; otherwise do nothing
-  startBtn.addEventListener('click', () => {
-    playVideo(current);
+    const old = slides[current];
+    const next = slides[(nextIndex + slides.length) % slides.length];
+
+    // add exit/enter classes for optional CSS animation (if you have them)
+    if (direction === 'left') {
+      old.classList.add('exit-left');
+      next.classList.add('enter-right');
+    } else {
+      old.classList.add('exit-right');
+      next.classList.add('enter-left');
+    }
+
+    // switch active
+    requestAnimationFrame(() => {
+      slides.forEach(s => s.classList.remove('active'));
+      next.classList.add('active');
+      next.setAttribute('aria-hidden','false');
+      old.setAttribute('aria-hidden','true');
+    });
+
+    setTimeout(() => {
+      slides.forEach(s => s.classList.remove('enter-left','enter-right','exit-left','exit-right'));
+      current = (nextIndex + slides.length) % slides.length;
+      animating = false;
+      scrollActiveIntoView();
+    }, transitionMs + 10);
+  }
+
+  nextBtn.addEventListener('click', () => {
+    goTo((current + 1) % slides.length, 'left');
   });
 
-  // keyboard
+  prevBtn.addEventListener('click', () => {
+    goTo((current - 1 + slides.length) % slides.length, 'right');
+  });
+
+  // Start button toggles autoplay (image slideshow)
+  startBtn.addEventListener('click', () => {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+      startBtn.textContent = 'Start';
+      return;
+    }
+    // start autoplay
+    startBtn.textContent = 'Stop';
+    autoplayTimer = setInterval(() => {
+      goTo((current + 1) % slides.length, 'left');
+    }, autoplayDelay);
+  });
+
+  // keyboard nav
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') nextBtn.click();
     if (e.key === 'ArrowLeft') prevBtn.click();
   });
 
-  // initial state
-  slides.forEach((s, i) => {
-    if (i === 0) s.classList.add('active');
-    else s.classList.remove('active');
-  });
+  // initial scroll so first slide sits nicely
+  setTimeout(scrollActiveIntoView, 250);
 });
