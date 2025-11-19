@@ -122,18 +122,6 @@ body{
   }
 }
 
-/* active state */
-.slide.active{
-  opacity:1;
-  pointer-events:auto;
-  transform: translateY(0) scale(1);
-}
-.slide.exit-left{ transform: translateX(-150%) scale(.95); opacity:0; }
-.slide.exit-right{ transform: translateX(150%) scale(.95); opacity:0; }
-
-/* --- CONTROLS: pin to bottom of .stage (make sure .stage is positioned) --- */
-.stage { position: relative; } /* ensure absolute children are positioned relative to .stage */
-
 .controls{
   position:absolute;
   left:50%;
@@ -159,6 +147,7 @@ body{
 
 /* footer */
 .foot{margin-top:20px; padding-left:6px; color:rgba(10,40,45,.45); font-size:13px;}
+
 
 
 
