@@ -49,60 +49,51 @@ body{
 .btn.ghost{background:transparent; border:1px solid rgba(10,40,45,.1); color:var(--muted); padding:10px 14px;}
 
 /* slides container: reserve bottom space so controls stay visible */
+/* --- CENTERED SLIDES: reserve bottom space so controls stay visible --- */
 .slides{
   position:relative;
   display:flex;
   align-items:center;
-  justify-content:center;
-  padding-bottom:74px; /* reserve space for controls */
-  margin-bottom:4px;
+  justify-content:center;   /* center slide horizontally */
+  padding-bottom:74px;      /* reserve space for controls */
+  margin:0 auto 4px auto;
+  width:100%;
+  box-sizing:border-box;
 }
 
-/* slide card */
+/* --- SLIDE CARD: centered with margin auto (no left/transform hack) --- */
 .slide{
   position:relative;
   width:100%;
   max-width:700px;
+  margin: 0 auto;           /* center the card within the .slides container */
   background:var(--card);
   border-radius:14px;
   padding:20px 20px 72px 20px; /* extra bottom padding for controls */
   box-shadow:var(--shadow);
-  left:50%;
-  transform:translateX(-50%) translateY(12px) scale(.98);
+  /* remove left:50% and translate transform to avoid off-right placement */
+  transform: translateY(12px) scale(.98);
   opacity:0;
   pointer-events:none;
-  transition:transform .55s cubic-bezier(.2,.9,.3,1), opacity .4s ease;
+  transition: transform .55s cubic-bezier(.2,.9,.3,1), opacity .4s ease;
 }
+
+/* active state */
 .slide.active{
   opacity:1;
   pointer-events:auto;
-  transform:translateX(-50%) translateY(0) scale(1);
+  transform: translateY(0) scale(1);
 }
-.slide.exit-left{transform:translate(-150%,0) scale(.95); opacity:0;}
-.slide.exit-right{transform:translate(50%,0) scale(.95); opacity:0;}
+.slide.exit-left{ transform: translateX(-150%) scale(.95); opacity:0; }
+.slide.exit-right{ transform: translateX(150%) scale(.95); opacity:0; }
 
-/* video & image inside slide */
-.slide-video, .slide-gif{
-  width:100%;
-  height:200px; /* smaller for mobile; media queries below adjust */
-  object-fit:cover;
-  border-radius:12px;
-  margin-bottom:14px;
-  background:#000;
-}
-@media (min-width:720px){ .slide-video, .slide-gif{ height:260px; } }
-@media (max-width:420px){ .slide-video, .slide-gif{ height:180px; } }
+/* --- CONTROLS: pin to bottom of .stage (make sure .stage is positioned) --- */
+.stage { position: relative; } /* ensure absolute children are positioned relative to .stage */
 
-/* text inside slide */
-.index{font-weight:800; font-size:18px; color:#0aa86b; margin-bottom:8px;}
-.main{margin:0 0 8px; font-size:20px; font-weight:700;}
-.sub{margin:0; color:var(--muted); line-height:1.45; font-size:15px;}
-
-/* controls pinned inside slide */
 .controls{
   position:absolute;
   left:50%;
-  bottom:16px;
+  bottom:18px;
   transform:translateX(-50%);
   display:flex;
   gap:12px;
@@ -110,6 +101,7 @@ body{
   background:transparent;
   padding:0;
 }
+
 .ctrl{
   background: rgba(255,255,255,0.95);
   border:0;
@@ -123,3 +115,4 @@ body{
 
 /* footer */
 .foot{margin-top:20px; padding-left:6px; color:rgba(10,40,45,.45); font-size:13px;}
+
