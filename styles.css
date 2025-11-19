@@ -102,44 +102,48 @@ body{
    Slides container — reserves space for controls
    --------------------- */
 .slides{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding-bottom:84px; /* reserve space for controls inside card */
-  margin:0 auto 8px auto;
-  width:100%;
-  box-sizing:border-box;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-bottom: 84px;
+
+  /* IMPORTANT: prevents side-by-side stacking */
+  display: block;
 }
+
 
 /* ---------------------
    Slide card — MOBILE-FIT uniform height
    --------------------- */
 .slide{
-  position:relative;
-  width:94%;
-  max-width:420px;    /* ideal for mobile phones */
-  height:78vh;        /* uniform total card height (viewport-relative) */
-  margin:0 auto;
-  background:var(--card);
-  border-radius:22px;
-  padding:20px 18px 96px 18px; /* bottom padding for controls */
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  box-shadow:var(--shadow);
-  transform: translateY(12px) scale(.98);
-  opacity:0;
-  pointer-events:none;
-  transition: transform .55s cubic-bezier(.2,.9,.3,1), opacity .4s ease;
+  position: absolute;      /* <-- IMPORTANT 100% */
+  inset: 0;                /* fill the container */
+  margin: auto;
+
+  width: 100%;
+  max-width: 420px;
+  height: 78vh;
+
+  background: var(--card);
+  border-radius: 22px;
+  padding: 20px 18px 96px 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.98) translateY(12px);
+  transition: transform .5s, opacity .4s;
 }
 
-/* active */
 .slide.active{
-  opacity:1;
-  pointer-events:auto;
-  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
 }
+
 
 /* exit animations */
 .slide.exit-left{ transform: translateX(-150%) scale(.95); opacity:0; }
@@ -150,13 +154,14 @@ body{
    --------------------- */
 .slide-video,
 .slide-gif{
-  width:100%;
-  height:32vh;         /* same for all slides -> uniform card appearance */
-  object-fit:cover;
-  border-radius:16px;
-  margin-bottom:14px;
-  background:#000;
+  width: 100%;
+  height: 32vh;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  background: #000;
 }
+
 
 /* Text content inside slide */
 .index{ font-weight:800; font-size:18px; color:#0aa86b; margin-bottom:8px; }
@@ -231,3 +236,4 @@ body{
 button:focus, a:focus { outline: 3px solid rgba(99, 230, 200, 0.22); outline-offset:3px; }
 
 /* End of file */
+
