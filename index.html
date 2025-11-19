@@ -33,23 +33,17 @@
       <!-- SLIDES -->
       <div id="slides" class="slides" aria-live="polite">
 
-        <!-- ========================================== -->
-        <!-- SLIDE 1 -->
-        <!-- ========================================== -->
+        <!-- SLIDE 1 (video) -->
         <article class="slide" data-i="0" aria-hidden="false">
           <div class="slide-inner">
-
-            <!--  ⚠️ PUT YOUR VIDEO FILE FOR SLIDE 1 HERE -->
-            <!--   Upload: videos/slide0.mp4 -->
-            <video 
-              id="video-0"
-              class="slide-video"
-              playsinline
-              muted
-              preload="metadata"
-              src="slide1.mp4">
-            </video>
-            <!-- END VIDEO -->
+            <!-- Upload your file to: videos/slide0.mp4 -->
+            <video id="video-0"
+                   class="slide-video"
+                   playsinline
+                   muted
+                   preload="metadata"
+                   poster="videos/slide0.jpg"
+                   src="videos/slide0.mp4"></video>
 
             <div class="index">01</div>
             <h2 class="line main">How We Started</h2>
@@ -61,23 +55,17 @@
           </div>
         </article>
 
-        <!-- ========================================== -->
-        <!-- SLIDE 2 -->
-        <!-- ========================================== -->
+        <!-- SLIDE 2 (video) -->
         <article class="slide" data-i="1" aria-hidden="true">
           <div class="slide-inner">
-
-            <!--  ⚠️ PUT YOUR VIDEO FILE FOR SLIDE 2 HERE -->
-            <!--   Upload: videos/slide1.mp4 -->
-            <video 
-              id="video-1"
-              class="slide-video"
-              playsinline
-              muted
-              preload="metadata"
-              src="slide2.mp4">
-            </video>
-            <!-- END VIDEO -->
+            <!-- Upload your file to: videos/slide1.mp4 -->
+            <video id="video-1"
+                   class="slide-video"
+                   playsinline
+                   muted
+                   preload="metadata"
+                   poster="videos/slide1.jpg"
+                   src="videos/slide1.mp4"></video>
 
             <div class="index">02</div>
             <h2 class="line main">How It's Going</h2>
@@ -89,19 +77,12 @@
           </div>
         </article>
 
-        <!-- ========================================== -->
-        <!-- SLIDE 3 (IMAGE ONLY) -->
-        <!-- ========================================== -->
+        <!-- SLIDE 3 (image) -->
         <article class="slide" data-i="2" aria-hidden="true">
           <div class="slide-inner">
-        
-            <!-- IMAGE FOR SLIDE 3 -->
-            <img 
-              id="img-2"
-              class="slide-gif"
-              src="slide 3.jpeg"
-              alt="Slide 3 image" />
-        
+            <!-- Upload your file to: videos/slide3.jpg -->
+            <img id="img-2" class="slide-gif" src="videos/slide3.jpg" alt="Slide 3 image">
+
             <div class="index">03</div>
             <h2 class="line main">I Promise You</h2>
             <p class="sub">
@@ -113,20 +94,9 @@
           </div>
         </article>
 
-            <div class="index">03</div>
-            <h2 class="line main">I Promise You</h2>
-            <p class="sub">
-              I'll always listen.  
-              I'll never stop caring.  
-              I'll always choose you.  
-              I'll stay by your side through everything.
-            </p>
-          </div>
-        </article>
-
       </div>
 
-      <!-- CONTROLS -->
+      <!-- CONTROLS (pinned inside active slide) -->
       <div class="controls">
         <button id="prev" class="ctrl">Prev</button>
         <button id="next" class="ctrl">Next</button>
@@ -142,5 +112,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
