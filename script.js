@@ -1,5 +1,4 @@
-// Slide carousel with autoplay that mirrors the uploaded reel.
-// Timings are configurable below.
+// FULL VIDEO-ENABLED SLIDER
 
 document.addEventListener('DOMContentLoaded', () => {
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -8,90 +7,88 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('next');
   const qrLink = document.getElementById('qrLink');
 
-  // CONFIG: adjust these to match the video exactly
-  // slideDur: how long each slide stays fully visible (ms)
-  // transitionMs: animation duration (ms) - should match CSS transition
-  const slideDur = 2600;        // default 2.6s (change to 3500 or 4000 if video shows slower slides)
-  const transitionMs = 620;     // must be >= CSS animation time (~550ms)
-  const autoplayRounds = 1;     // how many full cycles autoplay runs on Start
-
-  // QR placeholder (replace with final deployed URL later)
+  // Your site for Scan/Open QR
   const placeholder = 'https://ybtsir.github.io/newVideo/';
   qrLink.href = `https://chart.googleapis.com/chart?cht=qr&chs=350x350&chl=${encodeURIComponent(placeholder)}`;
 
+  const transitionMs = 620; // match CSS slide transition
   let current = 0;
   let animating = false;
-  let autoplayTimer = null;
+  let videoEndHandler = null;
 
-  function show(i) {
-    if (animating || i === current) return;
-    animating = true;
-    const old = slides[current];
-    const next = slides[(i + slides.length) % slides.length];
+  const getVideo = (slide) => slide.querySelector('.slide-video');
 
-    // determine direction for nicer effect
-    const dir = (i > current || (i === 0 && current === slides.length -1)) ? 'left' : 'right';
-
-    // set exit/enter classes
-    if (dir === 'left') {
-      old.classList.add('exit-left');
-      next.classList.add('enter-right');
-    } else {
-      old.classList.add('exit-right');
-      next.classList.add('enter-left');
-    }
-
-    // small delay then swap active
-    requestAnimationFrame(() => {
-      // ensure classes applied then switch active
-      slides.forEach(s => s.classList.remove('active'));
-      next.classList.add('active');
-      next.setAttribute('aria-hidden','false');
-      old.setAttribute('aria-hidden','true');
-    });
-
-    // clear transitional classes after transition finishes
-    setTimeout(() => {
-      slides.forEach(s => s.classList.remove('enter-left','enter-right','exit-left','exit-right'));
-      current = (i + slides.length) % slides.length;
-      animating = false;
-    }, transitionMs + 40);
+  function pauseVideo(i){
+    const v = getVideo(slides[i]);
+    if (v){ v.pause(); v.currentTime = 0; }
   }
 
-  // buttons
-  nextBtn.addEventListener('click', () => {
-    show((current + 1) % slides.length);
-  });
-  prevBtn.addEventListener('click', () => {
-    show((current - 1 + slides.length) % slides.length);
+  function playVideo(i){
+    const v = getVideo(slides[i]);
+    if (!v) return;
+
+    // clean old listeners
+    if (videoEndHandler){
+      slides.forEach(s=>{
+        const vv = getVideo(s);
+        if (vv) vv.removeEventListener('ended', videoEndHandler);
+      });
+    }
+
+    // new listener to auto-advance when finished
+    videoEndHandler = () => {
+      goTo((i+1)%slides.length, 'left');
+    };
+    v.addEventListener('ended', videoEndHandler);
+
+    v.muted = true;
+    v.currentTime = 0;
+    const p = v.play();
+    if (p && p.catch){ p.catch(()=>{}); }
+  }
+
+  function goTo(nextIndex, direction='left'){
+    if (animating || nextIndex===current) return;
+    animating = true;
+
+    const oldSlide = slides[current];
+    const newSlide = slides[nextIndex];
+
+    pauseVideo(current);
+
+    if (direction==='left'){
+      oldSlide.classList.add('exit-left');
+      newSlide.classList.add('enter-right');
+    } else {
+      oldSlide.classList.add('exit-right');
+      newSlide.classList.add('enter-left');
+    }
+
+    requestAnimationFrame(()=>{
+      slides.forEach(s=>s.classList.remove('active'));
+      newSlide.classList.add('active');
+      newSlide.setAttribute('aria-hidden','false');
+      oldSlide.setAttribute('aria-hidden','true');
+    });
+
+    setTimeout(()=>{
+      slides.forEach(s=>s.classList.remove('enter-left','enter-right','exit-left','exit-right'));
+      current = nextIndex;
+      animating = false;
+      playVideo(current);
+    }, transitionMs+20);
+  }
+
+  nextBtn.addEventListener('click', ()=> goTo((current+1)%slides.length,'left'));
+  prevBtn.addEventListener('click', ()=> goTo((current-1+slides.length)%slides.length,'right'));
+
+  startBtn.addEventListener('click', ()=>{
+    playVideo(current);  // start playing the first slide video
   });
 
-  // Start button: autoplay through slides for autoplayRounds cycles
-  startBtn.addEventListener('click', () => {
-    if (autoplayTimer) return;
-    startBtn.disabled = true;
-    let cycles = 0;
-    autoplayTimer = setInterval(() => {
-      const nextIdx = (current + 1) % slides.length;
-      show(nextIdx);
-      if (nextIdx === slides.length - 1) cycles++;
-      if (cycles >= autoplayRounds) {
-        clearInterval(autoplayTimer);
-        autoplayTimer = null;
-        startBtn.disabled = false;
-      }
-    }, slideDur + transitionMs); // wait slide duration + animation time
-  });
-
-  // keyboard support (optional)
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') nextBtn.click();
-    if (e.key === 'ArrowLeft') prevBtn.click();
-  });
-
-  // initial show
-  slides.forEach((s, idx) => {
-    if (idx === 0) s.classList.add('active');
+  // initial
+  slides.forEach((s,i)=>{
+    if (i===0) s.classList.add('active');
     else s.classList.remove('active');
   });
 });
